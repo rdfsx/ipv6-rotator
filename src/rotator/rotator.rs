@@ -180,7 +180,7 @@ impl Rotator<'_> {
     }
 
     pub fn cleanup_last_address(&mut self) -> Result<(), Stderr> {
-        let addr = self.addresses.last().unwrap();
+        let addr = self.addresses.first().unwrap();
 
         let _ = match std::process::Command::new("ip")
             .arg("-6")
@@ -200,7 +200,7 @@ impl Rotator<'_> {
             }
         };
 
-        self.addresses.remove(-1);
+        self.addresses.remove(0);
         Ok(())
     }
 }
