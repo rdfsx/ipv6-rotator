@@ -200,7 +200,7 @@ impl Rotator<'_> {
             }
         };
 
-        self.addresses.pop();
+        self.addresses.remove(0);
         Ok(())
     }
 }
