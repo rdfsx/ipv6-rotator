@@ -84,13 +84,20 @@ impl<'a> Rotator<'a> {
 
 impl Rotator<'_> {
     pub fn rotate(&mut self) {
+        for _ in 0..self.count + 10 {
+                self.add_ip().unwrap();
+            }
+
         loop {
             for _ in 0..self.count {
                 self.add_ip().unwrap();
             }
 
             sleep(std::time::Duration::from_secs(self.sleep_time as u64));
-            self.cleanup_addresses().unwrap();
+
+            for _ in 0..self.count {
+                self.cleanup_last_address().unwrap();
+            }
         }
     }
 
@@ -172,29 +179,28 @@ impl Rotator<'_> {
         Ok(())
     }
 
-    /// Delete all the addresses that is inside addresses
-    pub fn cleanup_addresses(&mut self) -> Result<(), Stderr> {
-        self.addresses.iter().for_each(|addr| {
-            match std::process::Command::new("ip")
-                .arg("-6")
-                .arg("addr")
-                .arg("del")
-                .arg(addr)
-                .arg("dev")
-                .arg(&self.device)
-                .output()
-            {
-                Ok(_) => {
-                    println!("[DEL] {}", &addr);
-                }
-                Err(why) => {
-                    eprintln!("[ERROR] unable to delete ip addr({}): {}", &addr, why);
-                    exit(1)
-                }
-            }
-        });
+    pub fn cleanup_last_address(&mut self) -> Result<(), Stderr> {
+        let addr = self.addresses.last().unwrap();
 
-        self.addresses.clear();
+        let _ = match std::process::Command::new("ip")
+            .arg("-6")
+            .arg("addr")
+            .arg("del")
+            .arg(addr)
+            .arg("dev")
+            .arg(&self.device)
+            .output()
+        {
+            Ok(_) => {
+                println!("[DEL] {}", &addr);
+            }
+            Err(why) => {
+                eprintln!("[ERROR] unable to delete ip addr({}): {}", &addr, why);
+                exit(1)
+            }
+        };
+
+        self.addresses.pop();
         Ok(())
     }
 }
