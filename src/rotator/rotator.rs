@@ -84,7 +84,7 @@ impl<'a> Rotator<'a> {
 
 impl Rotator<'_> {
     pub fn rotate(&mut self) {
-        for _ in 0..self.count + 10 {
+        for _ in 0..self.count + 2 {
                 self.add_ip().unwrap();
             }
 
