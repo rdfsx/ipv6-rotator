@@ -93,5 +93,5 @@ fn main() {
         .sleep_time(sleep)
         .build();
 
-    &rotator.rotate();
+    let _ = &rotator.rotate();
 }
