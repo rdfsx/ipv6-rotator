@@ -64,7 +64,7 @@ fn main() {
     let sleep = matches
         .value_of("sleep")
         .unwrap()
-        .parse::<u16>()
+        .parse::<u32>()
         .expect("time is not a valid integer");
     let count = matches
         .value_of("count")
