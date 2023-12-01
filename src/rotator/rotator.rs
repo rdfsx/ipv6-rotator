@@ -12,7 +12,7 @@ pub enum IpBlock {
 #[derive(Debug, PartialEq)]
 pub struct Rotator<'a> {
     pub device: &'a str,
-    pub sleep_time: u16,
+    pub sleep_time: u32,
     pub block: IpBlock,
     pub network: &'a str,
     pub count: u16,
@@ -49,7 +49,7 @@ impl<'a> Rotator<'a> {
         self
     }
 
-    pub fn sleep_time(&mut self, sleep_time: u16) -> &mut Self {
+    pub fn sleep_time(&mut self, sleep_time: u32) -> &mut Self {
         self.sleep_time = sleep_time;
         self
     }
